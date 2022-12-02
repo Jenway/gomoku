@@ -76,19 +76,7 @@ History::~History()
 
 
 
-void History::on_pushButton_clicked()
-{
-    class HistoryBoard *w = new class HistoryBoard;
-    QDesktopWidget dw;
-//    int x= dw.width()*VIEW_VOL;
-//    int y=dw.height()*VIEW_VOL;
-    int x= 2600*VIEW_VOL;
-    int y= 1800*VIEW_VOL;
-    w->setFixedSize(x,y);
-    restart::RESTART_SEEK=0;
-    w->show();
-    this->hide();
-}
+
 
 void History::on_Button_clicked()
 {
