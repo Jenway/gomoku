@@ -1,9 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <author/>
- <comment/>
- <exportmacro/>
  <class>gameover</class>
- <widget name="gameover" class="QDialog">
+ <widget class="QDialog" name="gameover">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -15,14 +13,26 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget name="buttonBox" class="QDialogButtonBox">
+  <property name="styleSheet">
+   <string notr="true">background-image: url(:/image/icon/miku1.gif);</string>
+  </property>
+  <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>100</x>
      <y>240</y>
-     <width>341</width>
-     <height>32</height>
+     <width>181</width>
+     <height>61</height>
     </rect>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>181</width>
+     <height>61</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);</string>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
@@ -31,8 +41,37 @@
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
   </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>0</y>
+     <width>121</width>
+     <height>231</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>华康宋体W12(P)</family>
+     <pointsize>15</pointsize>
+     <weight>50</weight>
+     <italic>false</italic>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 15pt &quot;华康宋体W12(P)&quot;;
+background-color: rgb(85, 170, 255);</string>
+   </property>
+   <property name="text">
+    <string>    再
+    来
+一
+次
+ ？</string>
+   </property>
+  </widget>
  </widget>
- <pixmapfunction/>
  <resources/>
  <connections>
   <connection>
@@ -46,8 +85,8 @@
      <y>254</y>
     </hint>
     <hint type="destinationlabel">
-     <x>157</x>
-     <y>274</y>
+     <x>199</x>
+     <y>149</y>
     </hint>
    </hints>
   </connection>
