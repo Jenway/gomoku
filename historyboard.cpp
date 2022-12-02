@@ -1,13 +1,16 @@
 #include "historyboard.h"
 #include "ui_historyboard.h"
 
+int RESTART_SEEK=restart::RESTART_SEEK;
+
 HistoryBoard::HistoryBoard(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::HistoryBoard)
 {
     ui->setupUi(this);
-
     initboard();
+//    i = RESTART_SEEK;
+//    qDebug()<<restart::RESTART_SEEK;
 
     Timer = new QTimer(this);
     // 设置定时间隔
@@ -16,6 +19,8 @@ HistoryBoard::HistoryBoard(QWidget *parent) :
     // 启动定时器
 //    record = (RECORDS*)malloc(sizeof(RECORDS));
 //    HEAD = record;
+
+
     Timer->start();
 
 }
@@ -29,66 +34,44 @@ void HistoryBoard::readCSV(){
 
     QFile goData("gameRecord.csv");
     goData.open(QIODevice::ReadOnly);
-    QString line;
     goData.seek(i);
     line = goData.readLine();
     i+=line.length();
-
     QStringList lines =line.split(",");
     int temp;
     int tempNum=3;
             foreach (QString s, lines)
             {
                 temp=s.toInt();
-                if(tempCount>0){
-                    tempCount--;
-                }
-                else {
-                    qDebug() << temp;
+//                    qDebug() << temp;
                     if(tempNum == 3){
                         RECORD_PLAYER = temp;
-//                        qDebug() << "!!!!" << RECORD_PLAYER;
                     }
                     else if(tempNum ==2){
                         RECORD_X = temp;
                     }
-                    else{
+                    else if(tempNum==1){
                         RECORD_Y = temp;
                     }
                     tempNum -=1;
-                }
             }
-
-
 
     if (goData.read(2)==QString("->")){
             Timer->stop();
             qDebug("Oh!!!!");
-//            for(;HEAD->next != NULL;HEAD=HEAD->next){
-//                qDebug("%d,%d,%d",HEAD->player,HEAD->x,HEAD->y);
-//                board[HEAD->x][HEAD->y]=HEAD->player;
-//                this->update();
-//            }
         }
 
-    if(tempCount>0){}
-    else {
-
         board[RECORD_X+3][RECORD_Y+3]=RECORD_PLAYER;
+        qDebug()<<RECORD_X<<RECORD_Y<<RECORD_PLAYER;
         orderBoard[RECORD_X+3][RECORD_Y+3]=count;
         count++;
         this->update();
-    }
-//            record->next =(RECORDS*)malloc(sizeof(RECORDS));
-//            record = record->next;
-//            record->next =NULL;
-
-
     goData.close();
 }
 
 void HistoryBoard::paintEvent(QPaintEvent *)
 {
+
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
     QPen pen;
@@ -148,6 +131,7 @@ void HistoryBoard::paintEvent(QPaintEvent *)
     for(int i =1; i <COL+1;i++){
         for(int j =1;j<COL+1;j++){
             if(board[i+3][j+3]==1){
+
                 painter.setPen(QColor(82,149,120));     //画白点
                 painter.setBrush(QColor(91,165,133));
                 painter.drawEllipse(EDGE+i*BLOCK_SIZE-GO_SIZE,
@@ -185,7 +169,7 @@ void HistoryBoard::on_pushButton_clicked()
 
 void HistoryBoard::initboard(){
 
-    count =0;
+    count =1;
     for(int i =0;i<COL+8;i++){
         for(int j=0;j<COL+8;j++){
             board[i][j]=0;
@@ -193,5 +177,13 @@ void HistoryBoard::initboard(){
         }
     }
     tempCount = TEMPCOUNT;
-    i = RESTART_SEEK;
+//    i = RESTART_SEEK;
+//    qDebug()<<"ALAH"<<RESTART_SEEK;
+
+    QFile goData("gameRecord.csv");
+    goData.open(QIODevice::ReadOnly);
+    goData.seek(i);
+    line = goData.readLine();
+    i+=line.length();
+    goData.close();
 }

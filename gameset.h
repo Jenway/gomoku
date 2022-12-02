@@ -62,5 +62,4 @@ typedef struct GOS
 
 //int RESTART_SEEK=0;
 
-
 #endif // GAMESET_H

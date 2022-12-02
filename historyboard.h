@@ -2,7 +2,13 @@
 #define HISTORYBOARD_H
 
 #include <QWidget>
-#include "gameset.h"
+//#include "gameset.h"
+#include "history.h"
+
+#define COL 15
+
+extern int RESTART_SEEK;
+
 
 namespace Ui {
 class HistoryBoard;
@@ -16,15 +22,17 @@ public:
     explicit HistoryBoard(QWidget *parent = 0);
     ~HistoryBoard();
     void initboard();
-    int RESTART_SEEK=0;
+    int i;
 
 
 private:
     Ui::HistoryBoard *ui;
-    int i =RESTART_SEEK;
+
     int TEMPCOUNT=4;
     int tempCount=TEMPCOUNT;
-    int count =0;
+    int count =1;
+    QString line;
+
 
 private slots:
     void readCSV();

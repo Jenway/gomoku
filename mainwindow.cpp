@@ -30,6 +30,14 @@ void MainWindow::initgame(){
 
     first_go_done = false;
 
+    if(gametype == PVE2){
+        PVE_ON_P=false;}
+    else if(gametype==PVE) {
+        PVE_ON_P=true;
+    }
+    else{}
+
+
     if(gametype==EVE){
         setMouseTracking(false);
     }
@@ -465,6 +473,7 @@ void MainWindow::cpuGo(){
         if((gametype== PVE2||gametype== EVE)&&first_go_done == false){
             board[3+COL/2+1][3+COL/2+1] = handOn;
             afterGo(3+COL/2+1,3+COL/2+1);
+            player = (player==playerblack)?playerwhite:playerblack;
         }
         else{
         GOS goMax,goP;
@@ -961,26 +970,22 @@ void MainWindow::writeCSV(){
    record_p = HEAD->next;
     if(goData.open(QIODevice::ReadOnly)){
         int fsize=goData.size();
-        if(fsize==0){}
+        if(fsize==0){count=0;}
         else{
-                int i = 5;
-                goData.seek(fsize-i);
-                QString temp = goData.read(1);
-                while (!temp.compare(">") == 0 && temp != EOF)
-                {
+                int i = fsize-7;
+                while (goData.read(1)!=QString('>')) {
                     i++;
-                    goData.seek(fsize - i);
-                    temp = goData.read(1);
+                    goData.seek(i);
                 }
-                i++;
-                goData.seek(fsize - i);
-                QString lastLine=goData.readLine().trimmed();
-                lastLine=lastLine.remove(0,2);
-                count = lastLine.toInt();
-                qDebug(lastLine.toStdString().c_str());
+
+                QString lastLine=goData.readLine();
+                QStringList List = lastLine.split(',');
+                QString counto = List[0];
+                count = counto.toInt();
+                qDebug()<<count;
             }
 
-    }else {}
+    }else {count=0;}
     goData.close();
     count+=1;
     QStringList lines;
@@ -1004,7 +1009,7 @@ void MainWindow::writeCSV(){
 
     QString title= QString("Rec: %1,").arg(count);
     QString title2= QString("%1,").arg(cGametype);
-    QString title3 = QString("%1,").arg(cGamewinner);
+    QString title3 = QString("%1\n").arg(cGamewinner);
     QString title4 = QString("%1\n").arg(step_count);
     QString endLine=QString("->%1,%2\n").arg(count).arg(step_count);
 
@@ -1014,7 +1019,7 @@ void MainWindow::writeCSV(){
     while (record_p->next!=NULL) {
 //        tempPlayer=(record_p->player==2)?QString("White"):QString("Black");
         tempPlayer=(record_p->player==2)?1:2;
-        tempData =QString("%1,%2,%3\n").arg(tempPlayer).arg(record_p->x).arg(record_p->y);
+        tempData =QString("%1,%2,%3,\n").arg(tempPlayer).arg(record_p->x).arg(record_p->y);
         record_p = record_p->next;
         lines.append(tempData);
     }
@@ -1025,7 +1030,7 @@ void MainWindow::writeCSV(){
      goData.write(title.toStdString().c_str());
      goData.write(title2.toStdString().c_str());
      goData.write(title3.toStdString().c_str());
-     goData.write(title4.toStdString().c_str());
+//     goData.write(title4.toStdString().c_str());
 
      for (int i = 0; i < lines.size(); i++)
      {
