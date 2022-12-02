@@ -169,7 +169,7 @@ void HistoryBoard::on_pushButton_clicked()
 
 void HistoryBoard::initboard(){
 
-    count =1;
+    count =0;
     for(int i =0;i<COL+8;i++){
         for(int j=0;j<COL+8;j++){
             board[i][j]=0;
