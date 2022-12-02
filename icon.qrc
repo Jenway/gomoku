@@ -1,1 +1,11 @@
-<RCC/>
+<RCC>
+    <qresource prefix="/image">
+        <file>icon/favicon.ico</file>
+        <file>icon/favicon.png</file>
+        <file>icon/miku1.gif</file>
+        <file>icon/miku2.gif</file>
+        <file>icon/bak.png</file>
+        <file>icon/favicon2.png</file>
+    </qresource>
+    <qresource prefix="/data"/>
+</RCC>

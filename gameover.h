@@ -15,6 +15,11 @@ public:
     explicit gameover(QWidget *parent = 0);
     ~gameover();
 
+
+private slots:
+    void on_buttonBox_rejected(); 
+    void on_buttonBox_accepted();
+
 private:
     Ui::gameover *ui;
 };
