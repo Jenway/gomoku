@@ -7,6 +7,7 @@
 #include "gameset.h"
 #include "gameover.h"
 #include "start.h"
+#include "QTime"
 
 namespace Ui {
 class MainWindow;

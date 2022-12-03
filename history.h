@@ -6,6 +6,7 @@
 #include <QCheckBox>
 #include "historyboard.h"
 #include "gameset.h"
+#include "QPushButton"
 
 //extern  int RESTART_SEEK;
 
@@ -38,7 +39,7 @@ protected:
 
 
 private slots:
-    void on_pushButton_clicked();
+
     void on_Button_clicked();
 private:
     Ui::History *ui;

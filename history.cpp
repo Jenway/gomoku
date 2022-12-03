@@ -14,8 +14,8 @@ History::History(QWidget *parent) :
     int temp =0;
     QString line;
         if (goData.open(QIODevice::ReadOnly)){
-            this->ui->treeWidget->setColumnCount(4);
-            this->ui->treeWidget->setHeaderLabels(QStringList()<<"编号/持子"<<"X/模式"<<"Y/赢家"<<"");
+            this->ui->treeWidget->setColumnCount(6);
+            this->ui->treeWidget->setHeaderLabels(QStringList()<<"编号/持子"<<"X/模式"<<"Y/赢家"<<"时间"<<"步数"<<"");
 
 
             QStringList round;
@@ -36,7 +36,7 @@ History::History(QWidget *parent) :
 //                qDebug()<<temp;
                 connect(button,&QPushButton::clicked,this,History::on_Button_clicked);
 
-                this->ui->treeWidget->setItemWidget(TopItem,3,button);
+                this->ui->treeWidget->setItemWidget(TopItem,5,button);
 
                 temp+=line.length();
 
@@ -50,6 +50,7 @@ History::History(QWidget *parent) :
 
                     //创建子节点
                     qstrlist =QStringList(line.split(','));
+                    qstrlist[0]=(qstrlist[0]==QString("1"))?QString("white"):QString("black");
                     childItem = new QTreeWidgetItem(qstrlist);
                     TopItem->addChild(childItem);
 
@@ -76,19 +77,7 @@ History::~History()
 
 
 
-void History::on_pushButton_clicked()
-{
-    class HistoryBoard *w = new class HistoryBoard;
-    QDesktopWidget dw;
-//    int x= dw.width()*VIEW_VOL;
-//    int y=dw.height()*VIEW_VOL;
-    int x= 2600*VIEW_VOL;
-    int y= 1800*VIEW_VOL;
-    w->setFixedSize(x,y);
-    restart::RESTART_SEEK=0;
-    w->show();
-    this->hide();
-}
+
 
 void History::on_Button_clicked()
 {

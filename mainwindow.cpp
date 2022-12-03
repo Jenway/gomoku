@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+QTime globalTime;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -28,6 +29,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::initgame(){
 
+    globalTime.start();
     first_go_done = false;
 
     if(gametype == PVE2){
@@ -965,6 +967,7 @@ void MainWindow::on_homeButton_clicked()
 
 void MainWindow::writeCSV(){
 
+    int time = globalTime.elapsed()/1000.0;
     QFile goData("gameRecord.csv");
     int count =1;
    record_p = HEAD->next;
@@ -1009,7 +1012,8 @@ void MainWindow::writeCSV(){
 
     QString title= QString("Rec: %1,").arg(count);
     QString title2= QString("%1,").arg(cGametype);
-    QString title3 = QString("%1\n").arg(cGamewinner);
+    QString title3 = QString("%1,").arg(cGamewinner);
+    QString title34 = QString("%1 s,").arg(QString::number(time));
     QString title4 = QString("%1\n").arg(step_count);
     QString endLine=QString("->%1,%2\n").arg(count).arg(step_count);
 
@@ -1019,7 +1023,7 @@ void MainWindow::writeCSV(){
     while (record_p->next!=NULL) {
 //        tempPlayer=(record_p->player==2)?QString("White"):QString("Black");
         tempPlayer=(record_p->player==2)?1:2;
-        tempData =QString("%1,%2,%3,\n").arg(tempPlayer).arg(record_p->x).arg(record_p->y);
+        tempData =QString("%1,%2,%3,,%4,\n").arg(tempPlayer).arg(record_p->x).arg(record_p->y).arg(record_p->count);
         record_p = record_p->next;
         lines.append(tempData);
     }
@@ -1030,7 +1034,8 @@ void MainWindow::writeCSV(){
      goData.write(title.toStdString().c_str());
      goData.write(title2.toStdString().c_str());
      goData.write(title3.toStdString().c_str());
-//     goData.write(title4.toStdString().c_str());
+     goData.write(title34.toStdString().c_str());
+     goData.write(title4.toStdString().c_str());
 
      for (int i = 0; i < lines.size(); i++)
      {
