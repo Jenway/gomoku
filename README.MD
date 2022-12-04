@@ -2,6 +2,12 @@
 
 简单的五子棋，期末大作业
 
+托管到了[ Github 上。](https://github.com/Jenway/gomoku)
+
+额，鉴于 GitHub 不是很稳定。
+
+又 fork 到了[ Gitee 上一份。](https://gitee.com/jenway/gomoku)
+
 ## 1
 
 Based on QT 5.9.0
