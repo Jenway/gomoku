@@ -39,6 +39,12 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_pushButton_2_clicked();
+
+signals:
+
+    void siganal_hisboardToHistory();
+
 protected:
     void paintEvent(QPaintEvent*);
     int board[COL+8][COL+8];

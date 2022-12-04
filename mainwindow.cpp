@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 //    QFont ft;
-    this->setWindowTitle("Gomoku !");
+    this->setWindowTitle("Gomoku ! @ Jenway");
     this->setWindowIcon(QIcon(":image/icon/favicon2.png"));
     timeClock();
     gametype = start::gametype;
@@ -958,9 +958,10 @@ void MainWindow::on_homeButton_clicked()
         Timer->stop();
     }else{}
 
-    start *w = new start;
-    w->show();
-    w->gametype = PVE;
+    emit Signal_GameToHome();
+//    start *w = new start;
+//    w->show();
+//    w->gametype = PVE;
 
     this->hide();
 }

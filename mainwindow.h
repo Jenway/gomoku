@@ -44,6 +44,10 @@ private:
     bool first_go_done;// 第一棋子
     bool PVE_ON_P = true;
 
+signals:
+
+    void Signal_GameToHome();
+
 protected:
     void paintEvent(QPaintEvent*);
     void mouseMoveEvent(QMouseEvent *event);
@@ -66,5 +70,6 @@ private slots:
     void eveCpuGo();
     void pveCpuGo();
     void on_homeButton_clicked();
+
 };
 #endif // MAINWINDOW_H

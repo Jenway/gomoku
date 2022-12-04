@@ -32,15 +32,20 @@ public:
     explicit History(QWidget *parent = 0);
     ~History();
 
+public slots:
+    void on_pushButton_clicked();
 
 
 protected:
 
+signals:
 
+    void Signal_HistoryToHome();
 
 private slots:
 
     void on_Button_clicked();
+
 private:
     Ui::History *ui;
 };

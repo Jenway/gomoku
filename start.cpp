@@ -35,6 +35,7 @@ start::~start()
 void start::on_AcceptButton_accepted()
 {
     class MainWindow *w = new class MainWindow;
+    connect(w,&MainWindow::Signal_GameToHome,this,&start::show);
     QDesktopWidget dw;
 //    int x= dw.width()*VIEW_VOL;
 //    int y=dw.height()*VIEW_VOL;
@@ -86,12 +87,14 @@ void start::readCSV(){
     QFile goData("gameRecord.csv");
     if(goData.open(QIODevice::ReadOnly)){
         History *h = new History;
+        connect(h,&History::Signal_HistoryToHome,this,&start::show);
         h->show();
         this->hide();
         goData.close();
 
     }
     else {
+
         //
         QMessageBox *msg=new QMessageBox;
         msg->critical(this,"错误","Data Not Found!",msg->Yes);

@@ -82,6 +82,7 @@ History::~History()
 void History::on_Button_clicked()
 {
     class HistoryBoard *w = new class HistoryBoard;
+    connect(w,&HistoryBoard::siganal_hisboardToHistory,this,&History::show);
     QDesktopWidget dw;
 //    int x= dw.width()*VIEW_VOL;
 //    int y=dw.height()*VIEW_VOL;
@@ -99,4 +100,10 @@ void History::on_Button_clicked()
    qDebug()<<restart::RESTART_SEEK;
     w->show();
     this->hide();
+}
+
+void History::on_pushButton_clicked()
+{
+    emit Signal_HistoryToHome();
+    this->destroy();
 }

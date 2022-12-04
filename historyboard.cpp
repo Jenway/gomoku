@@ -187,3 +187,10 @@ void HistoryBoard::initboard(){
     i+=line.length();
     goData.close();
 }
+
+void HistoryBoard::on_pushButton_2_clicked()
+{
+    emit siganal_hisboardToHistory();
+    Timer->stop();
+    this->hide();
+}
