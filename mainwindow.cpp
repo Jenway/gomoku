@@ -975,7 +975,7 @@ void MainWindow::writeCSV(){
         int fsize=goData.size();
         if(fsize==0){count=0;}
         else{
-                int i = fsize-7;
+                int i = fsize-10;
                 while (goData.read(1)!=QString('>')) {
                     i++;
                     goData.seek(i);
