@@ -24,6 +24,9 @@
 #define COL 15
 
 
+
+
+
 enum PLAYER{
     playerwhite,
     playerblack

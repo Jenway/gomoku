@@ -9,6 +9,17 @@
 #include "start.h"
 #include "QTime"
 
+#define S0 0
+#define SA 3000000
+#define SB 300000
+#define SC 30000
+#define SD 3000
+#define SE 2600
+#define SF 1800
+#define SG 800
+#define PW 250
+#define PB 200
+
 namespace Ui {
 class MainWindow;
 }
@@ -32,6 +43,8 @@ public:
     QTimer *Timer;
 
     int board[COL+8][COL+8];
+    int tempBoard[COL+8][COL+8];
+
 
     void initgame();
     void stepRecord(int chessX,int chessY);
@@ -57,8 +70,11 @@ protected:
     int judge(int x,int y);
     void cpuGo();
     void cpuGo2();
+    void cpuGo3(); // direct search
+    int drSearch(int handOn,int deep);
     int score(int chessx,int chessy);
     int score2(int chessx,int chessy,int me);
+    int score3(int chessx,int chessy,int me);
 
     void afterGo(int chessX,int chessY);
 

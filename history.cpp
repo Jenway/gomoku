@@ -77,8 +77,6 @@ History::~History()
 
 
 
-
-
 void History::on_Button_clicked()
 {
     class HistoryBoard *w = new class HistoryBoard;

@@ -468,6 +468,118 @@ int MainWindow::judge(int x,int y){
 
 }
 
+//void MainWindow::cpuGo3(){
+//    int handOn = (player==playerblack)?2:1;
+
+//    if(gamemode==started){
+//        if((gametype== PVE2||gametype== EVE)&&first_go_done == false){
+//            board[3+COL/2+1][3+COL/2+1] = handOn;
+//            afterGo(3+COL/2+1,3+COL/2+1);
+//        }
+//        else{
+//            int searchDeep = 2;
+//            GOS Best_Point;  // 最佳位
+//            Best_Point.score = 0;  // 进攻策略 最高权重
+//            Best_Point.X=0;Best_Point.Y=0;
+//            for(int i=0;i<COL+8;i++){
+//                for(int j=0;j<COL+8;j++){
+//                    tempBoard[i][j]=board[i][j];
+//                }
+//            }
+//            for(int i=0;i<COL+8;i++){
+//                for(int j=0;j<COL+8;j++){
+
+//                    value = drSearch(handOn,searchDeep);
+//                }
+//            }
+
+
+//        }
+//        player = (player==playerblack)?playerwhite:playerblack;
+
+//    }
+
+
+
+//    first_go_done = true;
+
+
+//}
+
+//int MainWindow::drSearch(int handOn,int deep){
+//    if(deep==0){
+//        drGo();
+//    }
+//    for(int i =4;i<COL+4;i++){
+//        for(int j= 4;j<COL+4;j++){
+//            if(tempBoard[i][j]==0){
+//                tempBoard[i][j]=handOn;
+//                drSearch(3-handOn,deep-1);
+//            }
+
+//        }
+//    }
+
+//}
+
+void MainWindow::cpuGo3(){
+    int handOn = (player==playerblack)?2:1;
+
+    if(gamemode==started){
+        if((gametype== PVE2||gametype== EVE)&&first_go_done == false){
+            board[3+COL/2+1][3+COL/2+1] = handOn;
+            afterGo(3+COL/2+1,3+COL/2+1);
+        }
+        else{
+            GOS Best_Attack;  // 最佳进攻位
+            GOS Best_Defend;  // 最佳防守位
+            Best_Attack.score = 0;  // 进攻策略 最高权重
+            Best_Defend.score = 0;  // 防守策略 最高权重
+            Best_Attack.X=0;Best_Attack.Y=0;Best_Defend.X=0;Best_Defend.Y=0;
+            // 最佳进攻
+            for (int i = 4; i < COL+4; i++){
+                for (int j = 4; j < COL+4; j++){
+                    if(board[i][j] != 0)
+                        continue;
+                    int value = score3(i,j,handOn);// 1 是 AI
+                    Best_Attack.score = (Best_Attack.score>value)?Best_Attack.score:value;
+                    Best_Attack.X = (Best_Attack.score>value)?Best_Attack.X:i;
+                    Best_Attack.Y = (Best_Attack.score>value)?Best_Attack.Y:j;
+                }
+            }
+
+            // 最佳防守
+            for (int i = 4; i < COL+4; i++){
+                for (int j = 4; j < COL+4; j++){
+                    if(board[i][j] != 0)
+                        continue;
+                    int value = score3(i,j,3-handOn);// 1 是 AI
+                    Best_Defend.score = (Best_Defend.score>value)?Best_Defend.score:value;
+                    Best_Defend.X = (Best_Defend.score>value)?Best_Defend.X:i;
+                    Best_Defend.Y = (Best_Defend.score>value)?Best_Defend.Y:j;
+                }
+            }
+            // 选择 防守 || 进攻
+            if(Best_Attack.score >= Best_Defend.score){  // 进攻 优先
+                board[Best_Attack.X][Best_Attack.Y] = handOn;
+                afterGo(Best_Attack.X,Best_Attack.Y);
+            }
+            else{ // 防守
+                board[Best_Defend.X][Best_Defend.Y] = handOn;
+                afterGo(Best_Defend.X,Best_Defend.Y);
+            }
+
+
+        }
+        player = (player==playerblack)?playerwhite:playerblack;
+
+    }
+
+
+
+    first_go_done = true;
+    }
+
 void MainWindow::cpuGo(){
     int handOn = (player==playerblack)?2:1;
 
@@ -560,6 +672,209 @@ void MainWindow::cpuGo2(){
     first_go_done = true;
     }
 
+int MainWindow::score3(int x,int y,int me) {
+        int value = 0;
+        int rival = 3-me; // 对手
+        int empty = 0;   // 无棋子
+        int boundary = -1;// 边界
+        // 遍历 8 个方向
+        for( int direct=1 ; direct <= 8 ; direct++ )  {
+            //P0 S0 1[][][]*1/ 1[][]*[]1  / 1[][]*1/ 1[]*[]1 / 1*[]1 / 1*1
+            if(
+         (
+           (getLine(x,y,direct,1)==rival||getLine(x,y,direct,1)==boundary)
+            &&(getLine(x,y,direct,-4)==rival||getLine(x,y,direct,-4)==boundary)
+         )
+       ||(
+                        (getLine(x,y,direct,2)==rival||getLine(x,y,direct,2)==boundary)
+                        &&
+                        (getLine(x,y,direct,-3)==rival||getLine(x,y,direct,-3)==boundary)
+          )
+       ||(
+                        (getLine(x,y,direct,1)==rival||getLine(x,y,direct,1)==boundary)
+                        &&
+                        (getLine(x,y,direct,-3)==rival||getLine(x,y,direct,-3)==boundary))
+       ||(
+                        (getLine(x,y,direct,2)==rival||getLine(x,y,direct,2)==boundary)
+                        &&
+                        (getLine(x,y,direct,-2)==rival||getLine(x,y,direct,-2)==boundary))
+       ||(
+                        (getLine(x,y,direct,2)==rival||getLine(x,y,direct,2)==boundary)
+                        &&
+                        (getLine(x,y,direct,-1)==rival||getLine(x,y,direct,-1)==boundary))
+       ||(
+                        (getLine(x,y,direct,1)==rival||getLine(x,y,direct,1)==boundary)
+                        &&
+                        (getLine(x,y,direct,-1)==rival||getLine(x,y,direct,-1)==boundary))
+                    )
+                    {
+                value += S0;
+                continue;
+            }
+            //P1 SA 胜利 ->   *2222  /   22*22   / 2*222
+            if(
+         (getLine(x,y,direct,1)==me
+            &&getLine(x,y,direct,2)==me
+            &&getLine(x,y,direct,3)==me
+            &&getLine(x,y,direct,-4)==me
+            )
+       ||(getLine(x,y,direct,1)==me
+            &&getLine(x,y,direct,2)==me
+            &&getLine(x,y,direct,-1)==me
+            &&getLine(x,y,direct,-2)==me
+            )
+       ||(getLine(x,y,direct,-1)==me
+            &&getLine(x,y,direct,1)==me
+            &&getLine(x,y,direct,2)==me
+            &&getLine(x,y,direct,3)==me
+            )
+                    )
+               {
+                value += SA;
+                continue;}
+            //P2 SB下一步胜利 -> (0||2)2*22(0||2)  /  (0||2)*222(0||2)
+            if(
+         (
+         (getLine(x,y,direct,-2)==me||getLine(x,y,direct,-2)==empty)
+            &&getLine(x,y,direct,-1)==me
+            &&getLine(x,y,direct,1)==me
+            &&getLine(x,y,direct,2)==me
+            &&(getLine(x,y,direct,3)==me||getLine(x,y,direct,3)==empty)
+            )
+       ||(
+          (getLine(x,y,direct,4)==me||getLine(x,y,direct,4)==empty)
+             &&getLine(x,y,direct,1)==me
+             &&getLine(x,y,direct,2)==me
+             &&getLine(x,y,direct,3)==me
+             &&(getLine(x,y,direct,-1)==me||getLine(x,y,direct,-1)==empty)
+                    )
+                    )
+               {
+                value += SB;
+                continue;}
+           //P3 SC下一步 多半无用 -> [0|1]*222[0|1]  / [0|1]2*22[0|1]
+            if(
+         (
+            getLine(x,y,direct,1)==me
+          &&getLine(x,y,direct,2)==me
+          &&getLine(x,y,direct,3)==me
+          &&(getLine(x,y,direct,4)==empty||getLine(x,y,direct,4)==rival)
+          &&(getLine(x,y,direct,-1)==empty||getLine(x,y,direct,4)==rival)
+         )
+       ||(
+          getLine(x,y,direct,-1)==me
+          &&getLine(x,y,direct,1)==me
+          &&getLine(x,y,direct,2)==me
+          &&(getLine(x,y,direct,-2)==empty||getLine(x,y,direct,-2)==rival)
+          &&(getLine(x,y,direct,3)==empty||getLine(x,y,direct,3)==rival)
+         )
+
+                    )
+                    {
+                value += SC;
+                continue;
+            }
+            //P4  SD     0*220 / 02*20 /
+            if(
+         (
+            getLine(x,y,direct,1)==me
+          &&getLine(x,y,direct,2)==me
+          &&getLine(x,y,direct,3)==empty
+          &&getLine(x,y,direct,-1)==empty
+         )
+       ||(
+          getLine(x,y,direct,-1)==me
+          &&getLine(x,y,direct,1)==me
+          &&getLine(x,y,direct,2)==empty
+          &&getLine(x,y,direct,-2)==empty
+
+         )
+
+                    )
+                    {
+                value += SD;
+                continue;
+            }
+            //P5  SE      [0|1]*22[0|1] / [0|1]2*2[0|1] /
+            if(
+         (
+            getLine(x,y,direct,1)==me
+          &&getLine(x,y,direct,2)==me
+          &&(getLine(x,y,direct,3)==empty||getLine(x,y,direct,3)==rival)
+          &&(getLine(x,y,direct,-1)==empty||getLine(x,y,direct,-1)==rival)
+         )
+       ||(
+          getLine(x,y,direct,-1)==me
+          &&getLine(x,y,direct,1)==me
+          &&(getLine(x,y,direct,-2)==empty||getLine(x,y,direct,-2)==rival)
+          &&(getLine(x,y,direct,2)==empty||getLine(x,y,direct,2)==rival)
+         )
+
+                    )
+                    {
+                value += SE;
+                continue;
+            }
+            //P6  SC     [0|2]*22[0|2]  /   [0|2]2*2[0|2]
+            if(
+         (
+            getLine(x,y,direct,1)==me
+          &&getLine(x,y,direct,2)==me
+          &&getLine(x,y,direct,3)==me
+          &&(getLine(x,y,direct,4)==empty||getLine(x,y,direct,4)==me)
+          &&(getLine(x,y,direct,-1)==empty||getLine(x,y,direct,4)==me)
+         )
+       ||(
+          getLine(x,y,direct,-1)==me
+          &&getLine(x,y,direct,1)==me
+          &&getLine(x,y,direct,2)==me
+          &&(getLine(x,y,direct,-2)==empty||getLine(x,y,direct,-2)==me)
+          &&(getLine(x,y,direct,3)==empty||getLine(x,y,direct,3)==me)
+         )
+
+                    )
+                    {
+                value += SC;
+                continue;
+            }
+            //P7  SF 活的2        (0//2)[]*2[](0//2)
+         if((getLine(x,y,direct,-2)==empty||getLine(x,y,direct,-2)==me)
+          &&(getLine(x,y,direct,3)==empty||getLine(x,y,direct,3)==me)
+                 &&getLine(x,y,direct,2)==me
+                 ){
+             value+=SF;
+             for(int k =0;k<6;k++){
+                 if(getLine(x,y,direct,k-2)==me){
+                     value +=PW;
+                 }
+                 if(getLine(x,y,direct,k-2)==rival){
+                     value +=PB;
+                 }
+             }
+             continue;
+         }
+            //P8  SG   半死的2     [0|1][]*2[][0|1]
+         if((getLine(x,y,direct,-2)==empty||getLine(x,y,direct,-2)==rival)
+          &&(getLine(x,y,direct,3)==empty||getLine(x,y,direct,3)==rival)
+                 &&getLine(x,y,direct,2)==me
+                 ){
+             value+=SG;
+             for(int k =0;k<6;k++){
+                 if(getLine(x,y,direct,k-2)==me){
+                     value +=PW;
+                 }
+                 if(getLine(x,y,direct,k-2)==rival){
+                     value +=PB;
+                 }
+             }
+             continue;
+
+         }
+
+          }
+        return value;
+    }
+
 
 int MainWindow::score2(int x,int y,int me) {
 //        int me =(player==playerblack)?2:1;// me 作为参数是有必要的
@@ -571,57 +886,86 @@ int MainWindow::score2(int x,int y,int me) {
 
         int cnt_live_2 = 0;//活二的数量
 
-        // 连五 > 活四 > 死四*3 > 活三*2 >
+        // 活四 > 死四*3 > 活三*2 >
         // 活二*3 （略大于）死三*6 > 死二*4 > 其他棋型
+
+        // Phase 判断的顺序 Score 权重的顺序
+        //P4 在 P3 和 P2 之后判断  [0/1][0/1]表示一个为1一个为0
+        // 死棋 S0
+        // 可重复的中 ，以 * 在前的优先
+
+        //P0 S0 1[][][]*1/ 1[][]*[]1  / 1[][]*1/ 1[]*[]1 / 1*[]1 / 1*1
+            // else +
+        //P1 SA 胜利 ->   *2222  /   22*22   / 2*222
+        //P2 SB下一步胜利 -> (0||2)2*22(0||2)  /  (0||2)*222(0||2)
+        //P3 SC下一步 多半无用 -> [0|1]*222[0|1]  / [0|1]2*22[0|1]
+        //P4  SD     0*220 / 02*20 /
+        //P5  SE      [0|1]*22[0|1] / [0|1]2*2[0|1] /
+        //P6  SC     [0|2]*22[0|2]  /   [0|2]2*2[0|2]
+        //P7  SF 活的2        (0//2)[]*2[](0//2)
+                    //2+1-
+        //P8  SG   半死的2     [0|1][]*2[][0|1]
+                    //2+1-
+
+
         // 遍历 8 个方向
         for( int direct=1 ; direct <= 8 ; direct++ )  {
             // 活四 必胜
-            // 1.活四  *22220
-            if(getLine(x,y,direct, 1) == me
+            // 1.活四  *22220/ 22*22 / 222*2
+            if(
+               (getLine(x,y,direct, 1) == me
                && getLine(x,y,direct, 2) == me
                && getLine(x,y,direct, 3) == me
-               && getLine(x,y,direct, 4) == me
-               && getLine(x,y,direct, 5) == empty)
+               && getLine(x,y,direct, 4) == me)
+                || (getLine(x,y,direct, 1) == me
+                    && getLine(x,y,direct, 2) == me
+                    && getLine(x,y,direct, 3) == me
+                    && getLine(x,y,direct, -1) == me)
+                || (getLine(x,y,direct, 1) == me
+                    && getLine(x,y,direct, 2) == me
+                    && getLine(x,y,direct, -1) == me
+                    && getLine(x,y,direct, 2) == me)
+                    )
             {
-                value += 300000;
-                if(me == 1) value -= 500;// 人 不是当前棋手
+                value += 5000000;
+                if(me == 1) {value -= 500;}// 人 不是当前棋手
                 continue ;
             }
 
-            // 死四 ： 如果是己方则下子获得胜利，对手的话要竭力去赌
-            // 2. 死四A *22221
-            if(getLine(x,y,direct, 1) == me
-               && getLine(x,y,direct, 2) == me
-               && getLine(x,y,direct, 3) == me
-               && getLine(x,y,direct, 4) == me
-               && (getLine(x,y,direct, 5) == rival || getLine(x,y,direct, 5) == boundary))
-            {
-                value += 250000;
-                if(me == 1) value -= 500;
-                continue ;
-            }
+//             死四 ： 如果是己方则下子获得胜利，对手的话要竭力去赌
+//            // 2. 死四A *22221
+//            if(getLine(x,y,direct, 1) == me
+//               && getLine(x,y,direct, 2) == me
+//               && getLine(x,y,direct, 3) == me
+//               && getLine(x,y,direct, 4) == me
+//               && (getLine(x,y,direct, 5) == rival || getLine(x,y,direct, 5) == boundary))
+//            {
+//                value += 250000;
+//                if(me == 1) value -= 500;
+//                continue ;
+//            }
 
-            // 3. 死四B 2*222
-            if(getLine(x,y,direct, -1) == me
-               && getLine(x,y,direct, 1) == me
-               && getLine(x,y,direct, 2) == me
-               && getLine(x,y,direct, 3) == me)
-            {
-                value += 240000;
-                if(me == 1) value -= 500;
-                continue ;
-            }
+//            // 3. 死四B 2*222
+//            if(getLine(x,y,direct, -1) == me
+//               && getLine(x,y,direct, 1) == me
+//               && getLine(x,y,direct, 2) == me
+//               && getLine(x,y,direct, 3) == me)
+//            {
+//                value += 240000;
+//                if(me == 1) value -= 500;
+//                continue ;
+//            }
 
-            // 4. 死四C 22*22
-            if(getLine(x,y,direct, -2) == me
-               && getLine(x,y,direct, -1) == me
-               && getLine(x,y,direct, 1) == me
-               && getLine(x,y,direct, 2) == me)
-            {
-                value += 230000;
-                if(me == 1) value -= 500;
-                continue ;
-            }
+//            // 4. 死四C 22*22
+//            if(getLine(x,y,direct, -2) == me
+//               && getLine(x,y,direct, -1) == me
+//               && getLine(x,y,direct, 1) == me
+//               && getLine(x,y,direct, 2) == me)
+//            {
+//                value += 230000;
+//                if(me == 1) value -= 500;
+//                continue ;
+//            }
 
             // 活三 ： 可直接一手变成活四，当敌方活三出现时，必须进行防守
             // 5. 活三A 222*0
@@ -909,10 +1253,10 @@ void MainWindow::onTimeOut()
 void MainWindow::eveCpuGo(){
     if(gamemode== started){
         if(player==playerblack){
-            cpuGo();
+            cpuGo2();
         }
         else {
-            cpuGo2();
+            cpuGo3();
         }
     }
     else {
