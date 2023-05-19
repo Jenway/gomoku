@@ -6,7 +6,7 @@
 #include <QMouseEvent>
 #include <QFont>
 #include <QMainWindow>
-#include <QDesktopWidget>
+//#include <QDesktopWidget>
 #include <QDebug>
 #include <QDialog>
 #include <QTimer>

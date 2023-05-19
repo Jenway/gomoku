@@ -47,8 +47,7 @@ FORMS += \
     historyboard.ui
 
 RESOURCES += \
-    icon.qrc \
-    data.qrc
+    icon.qrc
 
 DISTFILES += \
     logo.rc \

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>868</width>
-    <height>553</height>
+    <width>1150</width>
+    <height>674</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,8 +18,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>841</width>
-     <height>521</height>
+     <width>1131</width>
+     <height>641</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -32,13 +32,6 @@ font: 75 12pt &quot;Arial&quot;;
       </property>
       <property name="text">
        <string>HISTORY</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="pushButton">
-      <property name="text">
-       <string>PushButton</string>
       </property>
      </widget>
     </item>

@@ -1,47 +1,42 @@
 #ifndef HISTORY_H
 #define HISTORY_H
 
-#include <QWidget>
-#include <QTreeWidget>
-#include <QCheckBox>
-#include "historyboard.h"
+#include "QPushButton"
 #include "gameset.h"
+#include "historyboard.h"
+#include <QCheckBox>
+#include <QFile>
+#include <QTreeWidget>
+#include <QWidget>
 
-//extern  int RESTART_SEEK;
+// extern  int RESTART_SEEK;
 
-class restart     //新建一个类存放全局变量
+class restart // 新建一个类存放全局变量
 {
 public:
-     static int RESTART_SEEK;
-
+    static int RESTART_SEEK;
 };
 
 namespace Ui {
 class History;
 }
 
-class History : public QWidget
-{
+class History : public QWidget {
 
     Q_OBJECT
 
 public:
-
-
-    explicit History(QWidget *parent = 0);
+    explicit History(QWidget* parent = 0);
     ~History();
 
-
-
 protected:
-
-
+    void closeEvent(QCloseEvent*);
 
 private slots:
-    void on_pushButton_clicked();
     void on_Button_clicked();
+
 private:
-    Ui::History *ui;
+    Ui::History* ui;
 };
 
 #endif // HISTORY_H

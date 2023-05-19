@@ -1,22 +1,21 @@
 #ifndef START_H
 #define START_H
 
-#include <QDialog>
-#include "mainwindow.h"
 #include "QMessageBox"
+#include <QDialog>
+#include <mainwindow.h>
 namespace Ui {
 class start;
 }
 
-class start : public QDialog
-{
+class start : public QDialog {
     Q_OBJECT
-
 public:
-    explicit start(QWidget *parent = 0);
+    explicit start(QWidget* parent = 0);
     ~start();
     static GAMETYPE gametype;
-    void readCSV();
+    void openHistoryPage();
+    void openMainWindow();
 
 private slots:
 
@@ -30,14 +29,14 @@ private slots:
 
     void on_EVE_BUTTON_toggled(bool checked);
 
-    void on_radioButton_toggled(bool checked);
+    void on_PVE2_BUTTON_toggled(bool checked);
 
-    void on_pushButton_clicked();
+    void on_HISTORY_BUTTON_clicked();
 
 private:
-    Ui::start *ui;
-
-
+    QLabel* label;
+    QMovie* movie;
+    Ui::start* ui;
 };
 
 #endif // START_H

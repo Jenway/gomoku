@@ -1,38 +1,34 @@
 #ifndef HISTORYBOARD_H
 #define HISTORYBOARD_H
 
+#include <QFile>
 #include <QWidget>
-//#include "gameset.h"
-#include "history.h"
+// #include "gameset.h"
 
 #define COL 15
 
 extern int RESTART_SEEK;
 
-
 namespace Ui {
 class HistoryBoard;
 }
 
-class HistoryBoard : public QWidget
-{
+class HistoryBoard : public QWidget {
     Q_OBJECT
 
 public:
-    explicit HistoryBoard(QWidget *parent = 0);
+    explicit HistoryBoard(QWidget* parent = 0);
     ~HistoryBoard();
     void initboard();
     int i;
 
-
 private:
-    Ui::HistoryBoard *ui;
+    Ui::HistoryBoard* ui;
 
-    int TEMPCOUNT=4;
-    int tempCount=TEMPCOUNT;
-    int count =1;
+    int TEMPCOUNT = 4;
+    int tempCount = TEMPCOUNT;
+    int count = 1;
     QString line;
-
 
 private slots:
     void readCSV();
@@ -41,13 +37,13 @@ private slots:
 
 protected:
     void paintEvent(QPaintEvent*);
-    int board[COL+8][COL+8];
-    int orderBoard[COL+8][COL+8];
-    QTimer *Timer;
-    int RECORD_X=0,RECORD_Y=0,RECORD_PLAYER=0;
-//    RECORDS *HEAD;
-//    RECORDS *record;
-
+    void closeEvent(QCloseEvent*);
+    int board[COL + 8][COL + 8];
+    int orderBoard[COL + 8][COL + 8];
+    QTimer* Timer;
+    int RECORD_X = 0, RECORD_Y = 0, RECORD_PLAYER = 0;
+    //    RECORDS *HEAD;
+    //    RECORDS *record;
 };
 
 #endif // HISTORYBOARD_H
